@@ -247,7 +247,7 @@ finally:
 
 2026-10-23 独立发布准备：**281 项测试通过**，包含官方格网转换与离线示例。
 wheel 在独立环境完成归档和 GUI 检查，可选 Resolver 安装与相对路径示例通过。
-Windows／Linux、Python 3.12／3.13 的 CI 已配置，远程矩阵尚未运行。
+Windows／Linux、Python 3.12／3.13 的远程检查见 [CI 状态](https://github.com/ottoKae/LandSat_GRiTS/actions/workflows/ci.yml)。
 见 [首次发布验收](docs/RELEASE_VALIDATION_20261023.md)。
 
 2026-10-21：**263 项测试通过**，覆盖轨道筛选、场景身份、缺测隔离、跨 UTM 最近邻采样、旧库兼容及 GUI。Ruff、依赖锁检查、源码包和 wheel 构建通过。读取设计及接口见 [光学轨道读取](docs/OPTICAL_TRACKS.md)。

@@ -25,6 +25,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: uv sync --locked --extra dev
       - run: uv run --locked ruff check src tests examples tooling/release
+      - run: uv run --locked python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
       - run: uv run --locked pytest -p no:cacheprovider --basetemp .test-tmp/ci
       - run: uv build --out-dir dist
       - run: uv run --locked python tooling/release/check_artifacts.py dist

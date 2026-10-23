@@ -5,6 +5,7 @@ Run commands from the repository root:
 
 ```sh
 uv run --locked ruff check src tests examples tooling/release
+uv run --locked python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
 uv run --locked pytest -p no:cacheprovider --basetemp .test-tmp/dev-run
 uv build --out-dir dist
 ```

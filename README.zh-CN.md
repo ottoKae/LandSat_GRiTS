@@ -279,6 +279,7 @@ MSS 没有官方 L2 SR，不能将其 L1 DN 放入此公共反射率视图。
 
 ```powershell
 $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = '1'
+.venv\Scripts\python.exe -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
 .venv\Scripts\python.exe -m pytest -q -p no:cacheprovider `
   --basetemp .test-tmp/your-unique-run
 .venv\Scripts\python.exe -m ruff check src tests examples tooling/release

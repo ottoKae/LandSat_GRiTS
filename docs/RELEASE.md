@@ -13,6 +13,7 @@
 ```sh
 uv sync --locked --extra dev
 uv run --locked ruff check src tests examples tooling/release
+uv run --locked python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
 uv run --locked pytest -p no:cacheprovider --basetemp .test-tmp/release-run
 uv build --out-dir .test-tmp/release-dist
 uv run python tooling/release/check_artifacts.py .test-tmp/release-dist
