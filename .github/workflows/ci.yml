@@ -1,0 +1,74 @@
+name: test-and-build
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.12', '3.13']
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked --extra dev
+      - run: uv run --locked ruff check src tests examples tooling/release
+      - run: uv run --locked pytest -p no:cacheprovider --basetemp .test-tmp/ci
+      - run: uv build --out-dir dist
+      - run: uv run --locked python tooling/release/check_artifacts.py dist
+      - name: Check wheel in a separate environment
+        shell: bash
+        run: |
+          uv venv .test-tmp/wheel-env --python '${{ matrix.python }}'
+          if [ "$RUNNER_OS" = Windows ]; then
+            PY=.test-tmp/wheel-env/Scripts/python.exe
+          else
+            PY=.test-tmp/wheel-env/bin/python
+          fi
+          uv pip install --python "$PY" dist/*.whl
+          "$PY" -I tooling/release/smoke_installed.py --output .test-tmp/wheel-demo
+      - name: Preserve release distributions
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: distributions
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 30
+  release:
+    if: github.ref == 'refs/tags/v0.2.0b1'
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist
+      - name: Publish tested beta artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python -c 'import os,tomllib; from pathlib import Path; v=tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]; assert os.environ["GITHUB_REF_NAME"] == "v"+v'
+          (cd dist && sha256sum *.whl *.tar.gz > SHA256SUMS)
+          gh release create "$GITHUB_REF_NAME" dist/*.whl dist/*.tar.gz dist/SHA256SUMS \
+            --verify-tag --title "LandSat_GRiTS $GITHUB_REF_NAME" \
+            --notes-file docs/RELEASE_NOTES_v0.2.0b1.md --prerelease --latest=false

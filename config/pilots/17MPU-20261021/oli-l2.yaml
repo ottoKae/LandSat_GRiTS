@@ -1,0 +1,15 @@
+mgrs_path: D:\Project\claude-demo\data_pipeline\S1-GRiTS\src\s1grits\data\mgrs.parquet
+tiles:
+- 17MPU
+start: '2023-01-01'
+end: '2025-12-31'
+missions:
+- 8
+- 9
+products:
+- oli-l2
+max_cloud_cover: 60
+chunk: 512
+output: D:\Project\claude-demo\data_pipeline\LandSat_GRiTS\outputs\pilots\17MPU-20261021
+access:
+  mode: auto

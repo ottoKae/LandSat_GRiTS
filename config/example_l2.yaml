@@ -1,0 +1,10 @@
+# Optional surface-reflectance products; this is not the full native-band archive.
+mgrs_path: ../data/mgrs.parquet
+tiles: [50RKV]
+start: '1972-07-23'
+end: '2026-10-20'
+missions: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+products: [mss-l1, tm-l2, etm-l2, oli-l2]
+output: ../outputs/example_l2
+max_cloud_cover: null
+chunk: 512

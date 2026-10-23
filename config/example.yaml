@@ -1,0 +1,23 @@
+# All paths resolve relative to this file. Replace tile, dates and output before a production run.
+mgrs_path: ../data/mgrs.parquet
+tiles: [50RKV]
+start: '1972-07-23'
+end: '2026-10-20'
+missions: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+products: [mss-l1, tm-l1, etm-l1, oli-l1]
+output: ../outputs/native_l1
+# null retains cloudy scenes and scenes without a cloud-cover estimate.
+max_cloud_cover: null
+chunk: 512
+resolutions:
+  mss-l1: 60
+  tm-l1: 30
+  etm-l1: 30
+  oli-l1: 30
+# Pan is always an independently snapped 15 m group, never forced to 30 m.
+# auto permits free STAC discovery. Modern L1 run requires an explicit backend:
+# access: {mode: local, directory: ../source_scenes}
+# OR (requires your configured AWS account; requester-pays charges apply):
+# access: {mode: aws-requester-pays, aws_profile: your-profile-name}
+# This setting only applies to USGS L1; PC MSS/L2 keep their public access route.
+access: {mode: auto}

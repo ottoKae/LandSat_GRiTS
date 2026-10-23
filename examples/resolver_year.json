@@ -1,0 +1,12 @@
+{
+  "cache_dir": "../outputs/resolver-cache",
+  "archives": [{
+    "sensor": "landsat",
+    "group": "optical",
+    "stores": ["../outputs/shenzhen-l2/49QHE/oli-l2/30m.zarr"],
+    "bands": ["coastal", "blue", "green", "red", "nir08", "swir16", "swir22"],
+    "label": "Landsat 9 OLI L2 - downloaded scenes only",
+    "default_period": "year",
+    "default_year": "2025"
+  }]
+}

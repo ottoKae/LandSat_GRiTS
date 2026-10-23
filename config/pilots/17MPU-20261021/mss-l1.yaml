@@ -1,0 +1,18 @@
+mgrs_path: D:\Project\claude-demo\data_pipeline\S1-GRiTS\src\s1grits\data\mgrs.parquet
+tiles:
+- 17MPU
+start: '1972-07-23'
+end: '1995-12-31'
+missions:
+- 1
+- 2
+- 3
+- 4
+- 5
+products:
+- mss-l1
+max_cloud_cover: 60
+chunk: 512
+output: D:\Project\claude-demo\data_pipeline\LandSat_GRiTS\outputs\pilots\17MPU-20261021
+access:
+  mode: auto

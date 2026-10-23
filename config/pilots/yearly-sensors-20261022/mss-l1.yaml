@@ -1,0 +1,14 @@
+mgrs_path: D:\Project\claude-demo\data_pipeline\S1-GRiTS\src\s1grits\data\mgrs.parquet
+tiles:
+- 49QHE
+start: '1979-01-01'
+end: '1979-12-31'
+missions:
+- 3
+products:
+- mss-l1
+max_cloud_cover: null
+chunk: 512
+access:
+  mode: auto
+output: D:\Project\claude-demo\data_pipeline\LandSat_GRiTS\outputs\pilots\yearly-sensors-20261022

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Landsat GRiTS · 格网图集</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23172b31'/%3E%3Cpath d='M6 6h8v8H6zM18 6h8v8h-8zM6 18h8v8H6zM18 18h8v8h-8z' fill='%2381b8a0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Landsat GRiTS 首页">
+      <svg class="brand-mark" viewBox="0 0 42 42" aria-hidden="true"><path d="M3 3h15v15H3zM24 3h15v15H24zM3 24h15v15H3z" fill="currentColor"/><path d="M24 24h15v15H24z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="31.5" cy="31.5" r="3" fill="currentColor"/></svg>
+      <span>LANDSAT <b>GRiTS</b><small>LOCAL DATA ATLAS</small></span>
+    </a>
+    <div class="sidebar-section"><span class="section-number">01</span><h2>选择观测</h2></div>
+    <label class="control-label" for="tile-select">MGRS 格网</label>
+    <select id="tile-select" disabled><option>正在读取归档…</option></select>
+    <label class="control-label" for="archive-select">传感器 · 产品级别</label>
+    <select id="archive-select" disabled></select>
+    <label class="control-label" for="track-select">轨道 · WRS 系统 / Path</label>
+    <select id="track-select" disabled></select>
+    <label class="control-label" for="scene-select">单幅观测 · 获取时间 / Row / 产品标识</label>
+    <select id="scene-select" disabled></select>
+    <p id="selection-note" class="selection-note">先选择轨道，再读取其中一景。</p>
+    <div class="sidebar-section second"><span class="section-number">02</span><h2>影像表达</h2></div>
+    <label class="control-label" for="group-select">变量组</label>
+    <select id="group-select" disabled></select>
+    <label class="control-label" for="mode-select">显示方式</label>
+    <select id="mode-select" disabled></select>
+    <div id="band-control"><label class="control-label" for="band-select">波段 / 变量</label><select id="band-select" disabled></select></div>
+    <div id="rgb-info" class="rgb-info" hidden></div>
+    <div class="sidebar-note"><span class="note-dot"></span><div>原生波段，分别归档<p>按传感器与产品级别保存。跨传感器画面使用独立拉伸，颜色不能直接作为定量比较。</p></div></div>
+    <div class="sidebar-footer"><span class="live-dot"></span> 本地只读浏览<span class="footer-detail" id="root-label">连接本地 Zarr 归档</span></div>
+  </aside>
+  <main>
+    <header class="page-header"><div><p class="eyebrow">EARTH OBSERVATION / COLLECTION 2</p><h1>Landsat 格网图集<span class="header-dot">.</span></h1><p class="page-description">按轨道选择单幅观测，在同一格网上查看每个已归档变量。</p></div><div class="local-badge"><span class="live-dot"></span> 离线可用 <span class="badge-divider">/</span> ZARR</div></header>
+    <section class="metrics" aria-label="已下载归档概览"><div class="metric"><span>已下载格网</span><strong id="count-tiles">—</strong><small>MGRS</small></div><div class="metric"><span>传感器产品归档</span><strong id="count-archives">—</strong><small>ARCHIVES</small></div><div class="metric"><span>已提交观测</span><strong id="count-scenes">—</strong><small>SCENES</small></div><div class="metric"><span>原生变量</span><strong id="count-variables">—</strong><small>ALL BANDS</small></div></section>
+    <div id="catalog-error" class="notice error" role="alert" hidden></div>
+    <nav class="workspace-nav" aria-label="浏览视图"><div class="tabs" role="tablist"><button class="tab active" id="tab-map" role="tab" aria-selected="true" aria-controls="view-map" data-view="map"><span class="tab-icon">▦</span> 格网地图</button><button class="tab" id="tab-compare" role="tab" aria-selected="false" aria-controls="view-compare" data-view="compare"><span class="tab-icon">◫</span> 多传感器对照</button><button class="tab" id="tab-gallery" role="tab" aria-selected="false" aria-controls="view-gallery" data-view="gallery"><span class="tab-icon">▤</span> 全部变量<span class="tab-count" id="gallery-count">0</span></button></div><span class="workspace-hint" id="workspace-hint">读取本地归档目录</span></nav>
+    <section id="view-map" class="view" role="tabpanel" aria-labelledby="tab-map">
+      <div class="map-layout"><div class="map-card"><div class="panel-heading"><div><span class="tiny-label">GRID EXPLORER</span><h2 id="map-title">正在加载格网</h2></div><span class="product-tag" id="map-product">ZARR</span></div><div id="main-map" class="map-canvas"><div class="loading-state"><span class="spinner"></span>读取影像…</div></div><div class="map-footer"><span><i class="outline-swatch"></i> MGRS 原始边界</span><span><i class="transparent-swatch"></i> 无有效像元</span><span>Web Mercator · EPSG:3857</span></div></div>
+      <aside class="inspector"><div class="inspector-heading"><span class="tiny-label">OBSERVATION</span><h2 id="observation-title">观测详情</h2></div><dl class="details" id="observation-details"></dl><div class="legend-block"><div class="legend-heading"><h3 id="legend-title">显示图例</h3><span id="legend-unit"></span></div><div id="preview-legend"></div><p id="legend-note" class="muted"></p></div><div class="validity-block"><div><span>预览有效像元</span><strong id="validity-value">—</strong></div><div class="validity-track"><span id="validity-fill"></span></div><p>依据所选波段的有效性掩膜。有效像元不等于无云像元。</p></div><a id="download-preview" class="download-button disabled" download="landsat-preview.png" aria-disabled="true"><svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true"><path d="M10 2v10m-4-4 4 4 4-4M3 13v4h14v-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>保存当前影像 PNG</a><p class="export-note">导出当前显示预览；原始数值保留在 Zarr 中。</p></aside></div>
+      <div class="context-note"><span class="note-icon">i</span><p><b>完整格网 ≠ 全格网有效覆盖。</b> 影像按固定 MGRS 范围归档；景外、无数据及部分温度缺测区域以透明显示。地图完全由本地数据绘制，无在线底图请求。</p></div>
+    </section>
+    <section id="view-compare" class="view" role="tabpanel" aria-labelledby="tab-compare" hidden><div class="view-description"><div><h2>同一格网，分别查看各条轨道</h2><p>每个传感器的每条轨道独立显示一景：当前轨道保留已选场景，其他轨道取最近日期。同格网统一地图范围；MSS 使用近红外假彩色。</p></div><label class="scope-label">展示范围<select id="compare-scope"><option value="tile">当前格网</option><option value="all">全部已下载格网</option></select></label></div><div id="compare-grid" class="compare-grid"></div><p class="view-footnote">不同轨道、日期和景框保持独立，不进行像元拼接或缺口填充。各画面独立 P2–P98 拉伸，不代表同日、光谱一致化或变化检测结果。</p></section>
+    <section id="view-gallery" class="view" role="tabpanel" aria-labelledby="tab-gallery" hidden><div class="view-description"><div><h2>每条轨道，查看全部变量</h2><p>各轨道分别显示一景的原生波段、温度、辅助量和质量标记；当前轨道保留已选场景，其他轨道取最近日期。点击缩略图进入对应单景地图。</p></div><span class="subtle-tag" id="gallery-progress">等待加载</span></div><div class="gallery-tools"><label for="gallery-scope" class="sr-only">变量展示范围</label><select id="gallery-scope"><option value="all">全部已下载格网</option><option value="tile">当前格网</option></select><label for="gallery-filter" class="sr-only">筛选变量</label><input id="gallery-filter" type="search" placeholder="搜索轨道、产品标识或波段，例如 P122 / ST_QA" autocomplete="off"><span id="gallery-visible"></span></div><div id="gallery-grid"></div><p class="view-footnote">图集数量按变量 × 轨道统计；每个缩略图来自一个完整场景身份，不混合各景波段。QA 颜色仅区分打包整数值，不直接表示质量优劣。</p></section>
+    <footer class="page-footer"><span>LANDSAT GRiTS <span class="footer-slash">/</span> 传感器 × 产品级别 × 时间</span><span>原生整数归档 · 有效性掩膜 · 可追溯来源</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+mgrs_path: D:\Project\claude-demo\data_pipeline\S1-GRiTS\src\s1grits\data\mgrs.parquet
+tiles:
+- 49QHE
+start: '2001-11-01'
+end: '2001-11-30'
+missions:
+- 7
+products:
+- etm-l2
+max_cloud_cover: null
+chunk: 512
+access:
+  mode: auto
+output: D:\Project\claude-demo\data_pipeline\LandSat_GRiTS\outputs\pilots\monthly-sensors-20261021
