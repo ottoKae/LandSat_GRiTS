@@ -17,6 +17,9 @@ requires `LANDSAT_GRITS_LEGACY_MGRS` pointing at the exact historical grid table
 ordinary CI skips it.
 
 Keep source archives, credentials, `.env` files and runtime logs out of commits.
+Save dated validation summaries, command logs and evidence receipts locally in
+`logs/YYYY-MM-DD/<run-name>/`; this directory is ignored by Git. Keep test counts
+and run histories out of the README. Record source paths and SHA-256 when archiving reports.
 Historical acceptance evidence is not part of the wheel or source distribution.
 Changes to storage semantics need recovery and reader compatibility tests.
 

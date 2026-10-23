@@ -243,41 +243,15 @@ finally:
 
 `landsat_grits.reader.open_common_reflectance` 可从同格网的 `tm-l2`、`etm-l2`、`oli-l2` 读取六个公共反射率波段：`blue, green, red, nir08, swir16, swir22`，并应用有效性掩膜和比例系数。该接口仅接受 L2，**MSS L1 不进入公共 SR 视图**；它保留场景及轨道身份、检查格网一致性，不执行跨传感器光谱响应校正。建议指定 `track="WRS2/P122"`；已知多轨道默认拒绝，明确需要时设置 `allow_mixed_tracks=True`，仍逐景保留，不拼接像元。示例见[轨道读取说明](docs/OPTICAL_TRACKS.md)。
 
-## 验证状态与使用范围
-
-2026-10-23 独立发布准备：**281 项测试通过**，包含官方格网转换与离线示例。
-wheel 在独立环境完成归档和 GUI 检查，可选 Resolver 安装与相对路径示例通过。
-Windows／Linux、Python 3.12／3.13 的远程检查见 [CI 状态](https://github.com/ottoKae/LandSat_GRiTS/actions/workflows/ci.yml)。
-见 [首次发布验收](docs/RELEASE_VALIDATION_20261023.md)。
-
-2026-10-21：**263 项测试通过**，覆盖轨道筛选、场景身份、缺测隔离、跨 UTM 最近邻采样、旧库兼容及 GUI。Ruff、依赖锁检查、源码包和 wheel 构建通过。读取设计及接口见 [光学轨道读取](docs/OPTICAL_TRACKS.md)。
-
-首批 **深圳大学 49QHE** 测试完成四类 Landsat 产品、共五景整格网归档；约 10.39 亿个变量像元完成解码，6,898 个源样本全部一致。另在 S2-GRiTS 完成同瓦片两个轨道的两景测试。两者均验证了单轨道、单景读取与校园缺测隔离。GUI 的 82 张变量预览、轨道切换、校园定位和桌面／移动端检查通过，4,556 个归档及来源文件的内容保持不变，详见 [深圳验收报告](docs/VALIDATION_SHENZHEN_20261021.md)。
-
-此前 GUI 的 88 个变量预览、传感器对照、图集、导出和移动端已通过真实浏览器验收；6,046 个原始归档文件的 SHA-256 前后一致。该记录针对历史 17MPU / 50RKV 批次，详见 [历史 GUI 验收报告](docs/VALIDATION_GUI_20261021.md)。
-
-已完成 **17MPU 的 MSS L1、TM L2、ETM+ L2、OLI/TIRS L2 各一景完整格网测试**：约 7.84 亿个变量像元及掩膜完成解码，6,960 个源样本全部一致，复跑正确跳过已完成场景。三类 L2 的公共六波段读取也通过。详见[完整格网验收报告](docs/VALIDATION_17MPU_20261021.md)；此前修复和测试背景见[实现审计](docs/AUDIT_20261021.md)。
-
-当前边界：
-
-- 现代 L1 在线影像读取（含 AWS Requester Pays）尚未验收，也未完成全时段、全球规模生产验证。
-- “全部原生波段”限于上述 Collection 2 产品的光谱测量波段；不含早期 RBV、Landsat 3 历史试验 MSS 热红外、浏览图或角度衍生 TIFF。
-- 生产归档不执行月合成或填补 ETM+ SLC-off 缺口。查看器可按 QA 筛选后生成月度显示，但不保证去除全部云雾，也不进行跨传感器光谱一致化。
-- `verify` 检查结构、时间轴和来源记录，不扫描全部像元块，也不证明上游没有漏景；本地源文件状态检查不等于内容校验和。
+## 文档
 
 | 文档 | 内容 |
 |---|---|
 | [GUI 使用说明](docs/GUI.md) | 启动、地图与图集、单位、图例及预览边界 |
 | [光学轨道读取](docs/OPTICAL_TRACKS.md) | Resolver 设计依据、Landsat / Sentinel-2 单景接口及多轨道规则 |
-| [深圳 49QHE 验收](docs/VALIDATION_SHENZHEN_20261021.md) | Landsat 五景、S2 两景、源像元检查与校园缺测隔离 |
-| [GUI 验收报告](docs/VALIDATION_GUI_20261021.md) | 88 个变量出图、浏览器交互与原始数据不变性 |
-| [17MPU 完整格网验收](docs/VALIDATION_17MPU_20261021.md) | 四类传感器的真实归档、有效覆盖、逐块检查与源值抽样 |
-| [实现审计与优化](docs/AUDIT_20261021.md) | 功能矩阵、具体修复、Zarr／下载取舍与最新测试 |
 | [详细使用说明](README.zh-CN.md) | 配置、续传、读取和运行约定 |
 | [存储设计](docs/DESIGN.md) | 格网、数组、提交与一致性约定 |
 | [数据源说明](docs/SOURCES.md) | 官方来源、产品范围、波段与标定依据 |
-| [原生 L1 验证记录](docs/VALIDATION_NATIVE_L1.md) | v0.2.0 测试和目录试点证据 |
-| [MSS/L2 验证记录](docs/VALIDATION.md) | 真实小窗口验证及其范围 |
 
 ## 许可与开发
 
