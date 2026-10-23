@@ -21,7 +21,7 @@ from landsat_grits.workflow import manifest_hash
 
 
 def diagnostic(name):
-    path = Path(__file__).parents[1] / "tooling/diagnostics/20261021_17mpu" / f"{name}.py"
+    path = Path(__file__).parents[1] / "tooling/validation" / f"{name}.py"
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

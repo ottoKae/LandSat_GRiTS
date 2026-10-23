@@ -20,7 +20,7 @@ landsat-grits --help
 
 如果使用 uv，安装命令为 `uv sync --locked`，之后用 `uv run landsat-grits ...`。
 首次测试版为 `0.2.0b1`，发布物见 [GitHub Releases](https://github.com/ottoKae/LandSat_GRiTS/releases)。
-本次不向 PyPI 上传，不假设 PyPI 已存在同名版本。
+请从本仓库或 GitHub Release 安装。
 
 ## 先运行离线示例
 

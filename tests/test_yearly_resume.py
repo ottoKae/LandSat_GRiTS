@@ -7,12 +7,11 @@ from types import SimpleNamespace
 
 def test_resume_clears_all_old_failures_before_launch(tmp_path, monkeypatch):
     path = (Path(__file__).resolve().parents[1]
-            / "tooling/diagnostics/20261022-yearly-sensors/download.py")
+            / "tooling/validation/download.py")
     spec = importlib.util.spec_from_file_location("yearly_download", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     monkeypatch.setattr(module, "EVIDENCE", tmp_path)
-    monkeypatch.setattr(module, "HERE", tmp_path)
     jobs = [{"name": f"mss-l1-q{q}", "product": "mss-l1", "quarter": q}
             for q in (1, 2)]
     module.atomic_json(tmp_path / "jobs.json", jobs)

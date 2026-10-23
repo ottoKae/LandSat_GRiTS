@@ -1,27 +1,38 @@
+# Python environments and generated files
 .venv/
+venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
+/build/
+/dist/
+
+# Test outputs and caches; tests/ source stays versioned
 .pytest_cache/
 .ruff_cache/
-dist/
-*.egg-info/
-outputs/
-.test-tmp/
-data/
-*.log
+.mypy_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+/coverage.xml
+/htmlcov/
+/.test-tmp/
+
+# Local data, pilot configurations and historical run records
+/data/
+/outputs/
 /logs/
+/config/pilots/
+/docs/evidence/
+/tooling/diagnostics/
+*.log
+
+# Credentials and local editor settings
 .env
 .env.*
 !.env.example
-/docs/evidence/
-/tooling/diagnostics/*
-!/tooling/diagnostics/20261021_17mpu/
-!/tooling/diagnostics/20261021_shenzhen/
-!/tooling/diagnostics/20261022-yearly-sensors/
-/tooling/diagnostics/20261021_17mpu/*
-!/tooling/diagnostics/20261021_17mpu/prepare_pilot.py
-!/tooling/diagnostics/20261021_17mpu/verify_full_tile.py
-/tooling/diagnostics/20261021_shenzhen/*
-!/tooling/diagnostics/20261021_shenzhen/append_second_path.py
-/tooling/diagnostics/20261022-yearly-sensors/*
-!/tooling/diagnostics/20261022-yearly-sensors/download.py
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db

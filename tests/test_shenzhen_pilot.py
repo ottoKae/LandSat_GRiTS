@@ -9,7 +9,7 @@ import pytest
 SPEC = importlib.util.spec_from_file_location(
     "append_second_path",
     Path(__file__).resolve().parents[1]
-    / "tooling/diagnostics/20261021_shenzhen/append_second_path.py",
+    / "tooling/validation/append_second_path.py",
 )
 HELPER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(HELPER)

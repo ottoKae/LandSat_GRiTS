@@ -1,9 +1,8 @@
 # Changelog
 
-## 0.2.0b1 — first public release candidate
+## 0.2.0b1 — 2026-10-23
 
-This is the first prepared public release. Earlier `0.2.0` labels in pilot
-reports refer to local development, not to a previous public release.
+First public beta release.
 
 - Collection 2 MSS, TM, ETM+, OLI/TIRS scene archives, separated by sensor family
   and product level; fixed MGRS extent and `(time,bands,x,y)` Zarr groups.

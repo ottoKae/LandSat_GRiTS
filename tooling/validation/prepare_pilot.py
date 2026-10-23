@@ -9,12 +9,12 @@ from __future__ import annotations
 
 import argparse
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import math
 from pathlib import Path
 import sys
 
-REPO = Path(__file__).resolve().parents[3]
+REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "src"))
 
 import numpy as np
@@ -91,8 +91,8 @@ def main():
     parser.add_argument("products", nargs="+", choices=list(PERIODS))
     parser.add_argument("--candidate-limit", type=int, default=64)
     args = parser.parse_args()
-    evidence = REPO / "docs/evidence/17MPU-20261021"
-    configs = REPO / "config/pilots/17MPU-20261021"
+    evidence = REPO / "logs" / date.today().isoformat() / "17mpu-pilot"
+    configs = evidence / "config"
     evidence.mkdir(parents=True, exist_ok=True)
     configs.mkdir(parents=True, exist_ok=True)
     for key in args.products:

@@ -17,10 +17,10 @@ from landsat_grits.catalog import CatalogError, scene_fingerprint, scene_key
 from landsat_grits.storage import atomic_json
 from landsat_grits.workflow import load_manifest, manifest_hash, store_for, verify
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[2]
 RUN = "yearly-sensors-20261022"
-EVIDENCE = ROOT / "docs/evidence" / RUN
-HERE = Path(__file__).resolve().parent
+# Frozen inputs and worker resume state must stay at one path across midnight.
+EVIDENCE = ROOT / "logs/2026-10-22/yearly-sensors"
 RESOLVER = ROOT.parent / "GRiTS-Resolver"
 PRODUCTS_ORDER = ["mss-l1", "tm-l2", "etm-l2", "oli-l2"]
 
@@ -123,7 +123,7 @@ def run():
     jobs = json.loads((EVIDENCE / "jobs.json").read_text(encoding="utf-8"))
     # Interleave products so the eight independent writers share time fairly.
     jobs.sort(key=lambda job: (job["quarter"], PRODUCTS_ORDER.index(job["product"])))
-    logs = HERE / "logs"
+    logs = EVIDENCE / "workers"
     logs.mkdir(exist_ok=True)
 
     def launch(job):

@@ -3,14 +3,14 @@
 # ruff: noqa: E402
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import hashlib
 import importlib.util
 import json
 from pathlib import Path
 import sys
 
-REPO = Path(__file__).resolve().parents[3]
+REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "src"))
 
 import numpy as np
@@ -22,11 +22,11 @@ from landsat_grits.storage import atomic_json
 from landsat_grits.workflow import ingest, load_manifest, store_for, verify
 
 SPEC = importlib.util.spec_from_file_location(
-    "verify_full_tile", REPO / "tooling/diagnostics/20261021_17mpu/verify_full_tile.py"
+    "verify_full_tile", REPO / "tooling/validation/verify_full_tile.py"
 )
 VERIFIER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(VERIFIER)
-EVIDENCE = REPO / "docs/evidence/shenzhen-20261021"
+EVIDENCE = REPO / "logs" / date.today().isoformat() / "shenzhen-pilot"
 
 
 class TimePlane:

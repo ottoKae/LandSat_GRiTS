@@ -9,7 +9,7 @@
 
 当前支持单机本地归档、来源清单冻结、场景级续传、xarray/Dask 按需读取，以及本地网页 GUI。完整历史覆盖取决于上游产品和配置的时间范围；支持某颗卫星不代表已下载其全部影像。
 
-**同一瓦片内按轨道、按景读取**：使用 `list_tracks → list_scenes → open_scene` 明确选择来源，或用 `open_track` 读取单轨时序。Landsat 轨道包含 WRS 系统与 Path，Row 单独保留；缺测部分不自动从另一轨、另一日期补齐。参考 GRiTS-Resolver 的设计、S2 对应接口和深圳大学 49QHE 测试说明见 [光学轨道读取](docs/OPTICAL_TRACKS.md)。
+**同一瓦片内按轨道、按景读取**：使用 `list_tracks → list_scenes → open_scene` 明确选择来源，或用 `open_track` 读取单轨时序。Landsat 轨道包含 WRS 系统与 Path，Row 单独保留；缺测部分不自动从另一轨、另一日期补齐。详见 [光学轨道读取](docs/OPTICAL_TRACKS.md)。
 
 **同瓦片日合成**：GRiTS-Resolver 的 `OpticalDailyResolver` 按 UTC 日读取本仓库的单景归档，
 允许同日跨轨，在质量筛选后逐像元选取完整波段组，并保留来源索引、场景 ID、轨道和实际时间。
@@ -45,7 +45,6 @@ landsat-grits gui outputs/shenzhen-l2
 
 `grid` 只获取官方格网元数据，`plan` 只检索来源，`run` 才下载影像。
 [完整快速开始](docs/QUICKSTART.md) 包含虚拟环境、离线格网转换、L1 本地导入与路径规则。
-[本机历史显示报告](docs/LOCAL_GUI_HISTORY_20261023.md) 记录已有 49QHE 试点，运行本仓库不需要这些数据。
 
 ## L1 与 L2 的区别
 
@@ -163,7 +162,7 @@ L1、L2 均保留源产品的整数值，写入时不转换成浮点物理量。
 
 示例使用本仓库 `data/mgrs.parquet`，可通过 `landsat-grits grid` 从官方格网生成，也可提供自己的 GeoParquet。每个 tile 的 WGS84 多边形先投影到对应 UTM，取外包矩形，再按目标像元间距向外对齐；格网在影像检索前确定，不随场景或年份变化。输出覆盖这个矩形，不按多边形边缘再次裁切。清单保存格网参数与源表 SHA-256。
 
-历史 S1-GRiTS 测试表包含 **19,002 个 tile 的覆盖子集**，并非全球全部 MGRS tile；其中 31 个跨日期变更线几何当前明确拒绝。独立格网命令只写入指定的瓦片，不宣称整个官方目录均可处理。需要其他区域时准备新的 GeoParquet。不同分辨率分别对齐，同一 extent 的 15 m 数组尺寸不能简单由 30 m 尺寸乘二得到。
+格网命令只写入指定的瓦片，拒绝缺失瓦片、无效几何和跨日期变更线几何。也可使用自己的 GeoParquet。不同分辨率分别对齐，同一 extent 的 15 m 数组尺寸不能简单由 30 m 尺寸乘二得到。
 
 ```text
 <output>/
@@ -228,7 +227,7 @@ L1、L2 均保留源产品的整数值，写入时不转换成浮点物理量。
 ```python
 from landsat_grits.storage import open_group
 
-ds = open_group(r"D:\archive\50RKV\oli-l1\30m.zarr", "optical")
+ds = open_group("outputs/archive/50RKV/oli-l1/30m.zarr", "optical")
 try:
     print(ds.data.dims)  # ('time', 'bands', 'x', 'y')
     window = ds.isel(time=slice(0, 1), x=slice(0, 256), y=slice(0, 256))
@@ -248,8 +247,8 @@ finally:
 | 文档 | 内容 |
 |---|---|
 | [GUI 使用说明](docs/GUI.md) | 启动、地图与图集、单位、图例及预览边界 |
-| [光学轨道读取](docs/OPTICAL_TRACKS.md) | Resolver 设计依据、Landsat / Sentinel-2 单景接口及多轨道规则 |
-| [详细使用说明](README.zh-CN.md) | 配置、续传、读取和运行约定 |
+| [光学轨道读取](docs/OPTICAL_TRACKS.md) | Landsat 单景、单轨接口及多轨道规则 |
+| [详细使用说明](docs/USAGE.md) | 配置、续传、读取和运行约定 |
 | [存储设计](docs/DESIGN.md) | 格网、数组、提交与一致性约定 |
 | [数据源说明](docs/SOURCES.md) | 官方来源、产品范围、波段与标定依据 |
 

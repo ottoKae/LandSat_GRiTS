@@ -17,9 +17,14 @@ def check(root):
         names = [name.split("/", 1)[-1] for name in archive.getnames()]
         for required in ("LICENSE", "NOTICE.md", "examples/offline_demo.py",
                          "tests/test_offline_demo.py", "tooling/release/smoke_installed.py",
-                         "tooling/diagnostics/20261022-yearly-sensors/download.py"):
+                         "docs/USAGE.md", "tooling/validation/download.py",
+                         "tooling/validation/prepare_pilot.py",
+                         "tooling/validation/verify_full_tile.py",
+                         "tooling/validation/append_second_path.py"):
             assert required in names, required
-        assert not any(name.startswith(("outputs/", "docs/evidence/", ".venv/"))
+        assert not any(name.startswith(("outputs/", "data/", "logs/", "docs/evidence/",
+                                        "config/pilots/", "tooling/diagnostics/",
+                                        ".venv/", ".test-tmp/"))
                        or name.endswith(".log") for name in names)
     print("Release content checks passed")
 
